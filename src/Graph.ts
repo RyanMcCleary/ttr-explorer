@@ -1,5 +1,5 @@
 import {Heap} from 'heap-js';
-import {Route, destinations, routes} from './Routes';
+import {Route, destinations} from './Routes';
 
 export class Graph {
   private adjacencies: Map<number, number>[];
