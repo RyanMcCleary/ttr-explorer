@@ -41,6 +41,13 @@ function App() {
 
   const [startDest, setStartDest] = useState('');
   const [endDest, setEndDest] = useState('');
+  const [tableItems, setTableItems] = useState<string[]>([]);
+  const [itemToAdd, setItemToAdd] = useState('');
+
+  const addItemHandler = () => {
+    if (itemToAdd === '') return;
+    setTableItems(tableItems.concat([itemToAdd]));
+  }
 
   const makeHandler = (setter: SetStateFn) => {
     return (e: React.ChangeEvent<HTMLSelectElement>) => setter(e.target.value);
@@ -61,6 +68,29 @@ function App() {
           <li key={index}>{routeDescription}</li>
         )}
       </ul>
+      <br />
+      <table>
+        <thead>
+          <th>Item</th>
+          <th>Control</th>
+        </thead>
+        <tbody>
+          {tableItems.map((item) =>
+            <tr key={item}>
+              <td>{item}</td>
+              <td></td>
+            </tr>
+          )}
+          <tr>
+            <td>
+              <SelectDestination id="addItemToTable" value={itemToAdd} handler={makeHandler(setItemToAdd)} />
+            </td>
+            <td>
+              <button onClick={addItemHandler}>Add</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </>
   )
 }
