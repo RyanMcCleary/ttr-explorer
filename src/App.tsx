@@ -20,8 +20,7 @@ function findRoutes(start: string, end: string): string[] {
   }
   const graph = new Graph(destinations);
   graph.addRoutes(routes);
-  const path = graph.shortestPath(graph.indexMap.get(start)!,
-    graph.indexMap.get(end)!);
+  const path = graph.shortestPath(start, end);
   return graph.pathToStrings(path);
 }
 
