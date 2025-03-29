@@ -71,8 +71,10 @@ function App() {
       <br />
       <table>
         <thead>
-          <th>Item</th>
-          <th>Control</th>
+          <tr>
+            <th scope="col">Item</th>
+            <th scope="col">Control</th>
+          </tr>
         </thead>
         <tbody>
           {tableItems.map((item) =>
