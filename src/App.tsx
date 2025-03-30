@@ -41,12 +41,17 @@ function App() {
 
   const [startDest, setStartDest] = useState('');
   const [endDest, setEndDest] = useState('');
-  const [tableItems, setTableItems] = useState<string[]>([]);
-  const [itemToAdd, setItemToAdd] = useState('');
+  const [restrictedEdges, setRestrictedEdges] = useState<[string, string][]>([]);
+  const [startDestToAdd, setStartDestToAdd] = useState('');
+  const [endDestToAdd, setEndDestToAdd] = useState('');
 
   const addItemHandler = () => {
-    if (itemToAdd === '') return;
-    setTableItems(tableItems.concat([itemToAdd]));
+    if (startDestToAdd === '' || endDestToAdd === '' ||
+      restrictedEdges.includes([startDestToAdd, endDestToAdd])
+    ) {
+      return;
+    }
+    setRestrictedEdges(restrictedEdges.concat([[startDestToAdd, endDestToAdd]]));
   }
 
   const makeHandler = (setter: SetStateFn) => {
@@ -72,20 +77,30 @@ function App() {
       <table>
         <thead>
           <tr>
-            <th scope="col">Item</th>
+            <th scope="col">Start</th>
+            <th scope="col">End</th>
             <th scope="col">Control</th>
           </tr>
         </thead>
         <tbody>
-          {tableItems.map((item) =>
-            <tr key={item}>
-              <td>{item}</td>
-              <td></td>
+          {restrictedEdges.map(([start, end]) =>
+            <tr key={`${start}-${end}`}>
+              <td>{destinations.get(start)}</td>
+              <td>{destinations.get(end)}</td>
+              <td>
+                <button onClick={() => {
+                  setRestrictedEdges(restrictedEdges.filter((edge) => 
+                    !(edge[0] == start && edge[1] == end)));
+                }}>Delete</button>
+              </td>
             </tr>
           )}
           <tr>
             <td>
-              <SelectDestination id="addItemToTable" value={itemToAdd} handler={makeHandler(setItemToAdd)} />
+              <SelectDestination id="addStartToTable" value={startDestToAdd} handler={makeHandler(setStartDestToAdd)} />
+            </td>
+            <td>
+              <SelectDestination id="addEndToTable" value={endDestToAdd} handler={makeHandler(setEndDestToAdd)} />
             </td>
             <td>
               <button onClick={addItemHandler}>Add</button>
