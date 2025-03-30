@@ -9,7 +9,7 @@ interface SelectDestinationProps {
   id: string;
   value: string;
   handler: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  ariaLabel: string;
+  ariaLabel?: string;
 }
 
 function findRoutes(start: string, end: string): string[] {
@@ -78,9 +78,9 @@ function App() {
       <table>
         <thead>
           <tr>
-            <th scope="col">Start</th>
-            <th scope="col">End</th>
-            <th scope="col">Control</th>
+            <th scope="col" tabIndex={-1}>Start</th>
+            <th scope="col" tabIndex={-1}>End</th>
+            <th scope="col" tabIndex={-1}>Control</th>
           </tr>
         </thead>
         <tbody>
@@ -97,19 +97,19 @@ function App() {
             </tr>
           )}
           <tr>
-            <td>
+            <td tabIndex={0}>
               <SelectDestination id="addStartToTable"
                 value={startDestToAdd}
                 handler={makeHandler(setStartDestToAdd)}
-                ariaLabel="Select end destination" />
+                ariaLabel="Select start of edge" />
             </td>
-            <td>
+            <td tabIndex={0}>
               <SelectDestination id="addEndToTable"
                 value={endDestToAdd}
                 handler={makeHandler(setEndDestToAdd)}
                 ariaLabel="Select end of edge" />
             </td>
-            <td>
+            <td tabIndex={0}>
               <button onClick={addItemHandler}>Add</button>
             </td>
           </tr>
