@@ -9,6 +9,7 @@ interface SelectDestinationProps {
   id: string;
   value: string;
   handler: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  ariaLabel: string;
 }
 
 function findRoutes(start: string, end: string): string[] {
@@ -24,9 +25,9 @@ function findRoutes(start: string, end: string): string[] {
   return graph.pathToStrings(path);
 }
 
-const SelectDestination: React.FC<SelectDestinationProps> = ({id, value, handler}) => {
+const SelectDestination: React.FC<SelectDestinationProps> = ({id, value, handler, ariaLabel}) => {
   return (
-    <select id={id} value={value} onChange={handler}>
+    <select id={id} value={value} onChange={handler} aria-label={ariaLabel}>
       <option value="">No Selection</option>
       {[...destinations.keys()].map((destKey, index) => 
         <option key={index} value={destKey}>
@@ -97,10 +98,16 @@ function App() {
           )}
           <tr>
             <td>
-              <SelectDestination id="addStartToTable" value={startDestToAdd} handler={makeHandler(setStartDestToAdd)} />
+              <SelectDestination id="addStartToTable"
+                value={startDestToAdd}
+                handler={makeHandler(setStartDestToAdd)}
+                ariaLabel="Select end destination" />
             </td>
             <td>
-              <SelectDestination id="addEndToTable" value={endDestToAdd} handler={makeHandler(setEndDestToAdd)} />
+              <SelectDestination id="addEndToTable"
+                value={endDestToAdd}
+                handler={makeHandler(setEndDestToAdd)}
+                ariaLabel="Select end of edge" />
             </td>
             <td>
               <button onClick={addItemHandler}>Add</button>
