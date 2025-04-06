@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {destinations, routes} from './Routes';
 import {Graph} from './Graph';
+import './App.css';
+import 'font-awesome/css/font-awesome.css';
 
 type SetStateFn = (value: string) => void;
 
@@ -103,7 +105,7 @@ function App() {
           <tr>
             <th scope="col">Start</th>
             <th scope="col">End</th>
-            <th scope="col">Control</th>
+            <th scope="col">Add/Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -115,7 +117,10 @@ function App() {
                 <button onClick={() => {
                   setRestrictedEdges(restrictedEdges.filter((edge) => 
                     !(edge[0] == start && edge[1] == end)));
-                }}>Delete</button>
+                }}
+                aria-label="Delete">
+                  <i className="fa fa-trash fa-lg delete-icon"></i>
+                </button>
               </td>
             </tr>
           )}
@@ -135,11 +140,14 @@ function App() {
                 ariaLabel="Select end of edge" />
             </td>
             <td>
-              <button onClick={addItemHandler}>Add</button>
+              <button onClick={addItemHandler} aria-label="Add">
+                <i className="fa fa-plus fa-lg add-icon"></i>
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
+      <br />
     </>
   )
 }

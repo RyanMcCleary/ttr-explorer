@@ -1,0 +1,37 @@
+table {
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid black;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-size: 1.1rem;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+button {
+    border: 0rem;
+}
+
+.add-icon {
+    color: #28a745;
+}
+
+.delete-icon {
+    color: #9E2A2F;
+}
