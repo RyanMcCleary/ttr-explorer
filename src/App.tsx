@@ -11,7 +11,7 @@ interface SelectDestinationProps {
   ariaLabel?: string;
 }
 
-function findRoutes(start: string, end: string): string[] {
+function findRoutes(start: string, end: string, restrictedEdges: [string, string][]): string[] {
   if (start === '' || end === '') {
     return ['Invalid selection'];
   } else if (start === end) {
@@ -19,8 +19,15 @@ function findRoutes(start: string, end: string): string[] {
     return [`${startDesc} to ${startDesc} in 0 segments`];
   }
   const graph = new Graph(destinations);
-  graph.addRoutes(routes);
+  const filteredRoutes = routes.filter((r) => {
+    return !restrictedEdges.some((edge) => (edge[0] === r.start && edge[1] === r.end) ||
+      (edge[1] === r.start && edge[0] === r.end));
+  });
+  console.log(restrictedEdges);
+  console.log(filteredRoutes);
+  graph.addRoutes(filteredRoutes);
   const path = graph.shortestPath(start, end);
+  if (path === undefined) return ['No path exists.'];
   return graph.pathToStrings(path);
 }
 
@@ -46,6 +53,10 @@ function App() {
   const [endDestToAdd, setEndDestToAdd] = useState('');
 
   const addItemHandler = () => {
+    console.log('----------');
+    console.log(startDestToAdd);
+    console.log(endDestToAdd);
+    console.log('----------');
     if (startDestToAdd === '' || endDestToAdd === '' ||
       restrictedEdges.includes([startDestToAdd, endDestToAdd])
     ) {
@@ -69,7 +80,7 @@ function App() {
       <SelectDestination id="endDest" value={endDest} handler={makeHandler(setEndDest)} />
       <br />
       <ul>
-        {findRoutes(startDest, endDest).map((routeDescription, index) =>
+        {findRoutes(startDest, endDest, restrictedEdges).map((routeDescription, index) =>
           <li key={index}>{routeDescription}</li>
         )}
       </ul>

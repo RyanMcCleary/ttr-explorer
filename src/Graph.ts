@@ -30,7 +30,7 @@ export class Graph {
     return new Set(this.adjacencies.get(vertex)!.keys());
   }
 
-  public shortestPath(start: string, end: string): string[] {
+  public shortestPath(start: string, end: string): string[] | undefined {
     const distanceComparator = (a: [string, number], b: [string, number]) => {
       if (a[1] === Infinity && b[1] === Infinity) return 0;
       return a[1] - b[1];
@@ -56,6 +56,7 @@ export class Graph {
         }
       }
     }
+    if (prev.get(end) === undefined) return undefined;
     let currVertex: string= end,
       prevVertex: string | undefined;
     const path: string[] = [end];
