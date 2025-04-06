@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './App.css';
 import {destinations, routes} from './Routes';
 import {Graph} from './Graph';
 
@@ -78,13 +77,13 @@ function App() {
       <table>
         <thead>
           <tr>
-            <th scope="col" tabIndex={-1}>Start</th>
-            <th scope="col" tabIndex={-1}>End</th>
-            <th scope="col" tabIndex={-1}>Control</th>
+            <th scope="col">Start</th>
+            <th scope="col">End</th>
+            <th scope="col">Control</th>
           </tr>
         </thead>
         <tbody>
-          {restrictedEdges.map(([start, end]) =>
+        {restrictedEdges.map(([start, end]) =>
             <tr key={`${start}-${end}`}>
               <td>{destinations.get(start)}</td>
               <td>{destinations.get(end)}</td>
@@ -97,19 +96,19 @@ function App() {
             </tr>
           )}
           <tr>
-            <td tabIndex={0}>
+            <td>
               <SelectDestination id="addStartToTable"
                 value={startDestToAdd}
                 handler={makeHandler(setStartDestToAdd)}
                 ariaLabel="Select start of edge" />
             </td>
-            <td tabIndex={0}>
+            <td>
               <SelectDestination id="addEndToTable"
                 value={endDestToAdd}
                 handler={makeHandler(setEndDestToAdd)}
                 ariaLabel="Select end of edge" />
             </td>
-            <td tabIndex={0}>
+            <td>
               <button onClick={addItemHandler}>Add</button>
             </td>
           </tr>
@@ -119,4 +118,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
