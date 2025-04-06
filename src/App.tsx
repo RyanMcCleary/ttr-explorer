@@ -8,6 +8,7 @@ interface SelectDestinationProps {
   id: string;
   value: string;
   handler: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  options: string[];
   ariaLabel?: string;
 }
 
@@ -31,11 +32,21 @@ function findRoutes(start: string, end: string, restrictedEdges: [string, string
   return graph.pathToStrings(path);
 }
 
-const SelectDestination: React.FC<SelectDestinationProps> = ({id, value, handler, ariaLabel}) => {
+function getNeighbors(destination: string): string[] {
+  if (destination === '') return [...destinations.keys()];
+  const result = new Set<string>();
+  for (const { start: u, end: v } of routes) {
+    if (destination === u) result.add(v);
+    else if (destination === v) result.add(u);
+  }
+  return [...result];
+}
+
+const SelectDestination: React.FC<SelectDestinationProps> = ({id, value, handler, options, ariaLabel}) => {
   return (
     <select id={id} value={value} onChange={handler} aria-label={ariaLabel}>
       <option value="">No Selection</option>
-      {[...destinations.keys()].map((destKey, index) => 
+      {options.map((destKey, index) => 
         <option key={index} value={destKey}>
           {destinations.get(destKey)}
         </option>
@@ -74,10 +85,12 @@ function App() {
       <h2>Ticket To Ride Route Explorer</h2>
       <br />
       <label htmlFor="startDest">Select start: </label>
-      <SelectDestination id="startDest" value={startDest} handler={makeHandler(setStartDest)} />
+      <SelectDestination id="startDest" value={startDest}
+        handler={makeHandler(setStartDest)} options={[...destinations.keys()]} />
       <br />
       <label htmlFor="endDest">Select end: </label>
-      <SelectDestination id="endDest" value={endDest} handler={makeHandler(setEndDest)} />
+      <SelectDestination id="endDest" value={endDest}
+        handler={makeHandler(setEndDest)} options={[...destinations.keys()]} />
       <br />
       <ul>
         {findRoutes(startDest, endDest, restrictedEdges).map((routeDescription, index) =>
@@ -111,12 +124,14 @@ function App() {
               <SelectDestination id="addStartToTable"
                 value={startDestToAdd}
                 handler={makeHandler(setStartDestToAdd)}
+                options={getNeighbors(endDestToAdd)}
                 ariaLabel="Select start of edge" />
             </td>
             <td>
               <SelectDestination id="addEndToTable"
                 value={endDestToAdd}
                 handler={makeHandler(setEndDestToAdd)}
+                options={getNeighbors(startDestToAdd)}
                 ariaLabel="Select end of edge" />
             </td>
             <td>
